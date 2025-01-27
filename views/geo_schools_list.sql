@@ -1,0 +1,46 @@
+create view <?= DB_SCHEMA ?>.geo_schools_list as select
+	s._id, -- as 'Identificador',
+	r._name as _regional, -- as 'Dirección Regional',
+	s._circuit, -- as 'Circuito',
+	ifNull(s._budgetcode, '0000') as _budgetcode, -- as 'Código Presupuestario',
+	s._name, -- as 'Nombre de la Institución',
+	concat(p._name, ', ', c._name, ', ', a._name, ', ', t._name) as _town, -- as 'Poblado',
+	d._description as _dependence, -- as 'Dependencia',
+	z._description as _zone, -- as 'Zona',
+	s._phone -- as 'Teléfono'
+
+	-- ifNull(ad._amount, 0) as _ad, -- as 'Matrícula Atención Directa',
+	-- ifNull(ae._amount, 0) as _ae, -- as 'Matrícula Aula Edad',
+	-- ifNull(bi._amount, 0) as _bi, -- as 'Matrícula Bachillerato Internacional',
+	-- ifNull(cl._amount, 0) as _cl, -- as 'Matrícula Cursos Libres',
+	-- ifNull(pr._amount, 0) as _pr, -- as 'Matrícula I y II Ciclos',
+	-- ifNull(se._amount, 0) as _se, -- as 'Matrícula De 7mo a 12vo año',
+	-- ifNull(ec._amount, 0) as _ec, -- as 'Matrícula Educación Convencional',
+	-- ifNull(ee._amount, 0) as _ee, -- as 'Matrícula Educación Emergente',
+	-- ifNull(rc._amount, 0) as _rc, -- as 'Matrícula Red de Cuido',
+	-- ifNull(pn._amount, 0) as _pn, -- as 'Matrícula Plan Nacional',
+	-- ifNull(pe._amount, 0) as _pe, -- as 'Matrícula Preescolar',
+	-- ifNull(pea._amount, 0) as _pea -- as 'Matrícula Proyecto de Educación Abierta'
+	-- y._id as _age
+from <?= DB_SCHEMA ?>.geo_schools s
+left join <?= DB_SCHEMA ?>.geo_towns t on t._id = s._town
+left join <?= DB_SCHEMA ?>.geo_districts a on a._id = t._district
+left join <?= DB_SCHEMA ?>.geo_cantons c on c._id = a._canton
+left join <?= DB_SCHEMA ?>.geo_provinces p on p._id = c._province
+left join <?= DB_SCHEMA ?>.geo_regionals r on r._id = s._regional
+left join <?= DB_SCHEMA ?>.geo_dependences d on d._id = s._dependence
+left join <?= DB_SCHEMA ?>.geo_zones z on z._id = t._zone;
+
+-- left join <?= DB_SCHEMA ?>.geo_enrollments ad on ad._enrollmentmode = 'AD' and ad._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments ae on ae._enrollmentmode = 'AE' and ae._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments bi on bi._enrollmentmode = 'BI' and bi._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments cl on cl._enrollmentmode = 'CL' and cl._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments pr on pr._enrollmentmode = 'PR' and pr._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments se on se._enrollmentmode = 'SE' and se._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments ec on ec._enrollmentmode = 'EC' and ec._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments ee on ee._enrollmentmode = 'EE' and ee._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments rc on rc._enrollmentmode = 'RC' and rc._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments pn on pn._enrollmentmode = 'PN' and pn._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments pe on pe._enrollmentmode = 'PE' and pe._school = s._id
+-- left join <?= DB_SCHEMA ?>.geo_enrollments pea on pea._enrollmentmode = 'PEA' and pea._school = s._id
+
